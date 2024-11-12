@@ -38,22 +38,6 @@ public class LibraryManagementSystem {
         System.out.println("Book not found.");
         return false;
     }
-
-    // CWE-835: Proper exit conditions in the search loop to prevent infinite loops
-    public void searchBook(String query) {
-        boolean found = false;
-        for (Book book : books) {
-            if (book.getTitle().contains(query) || book.getAuthor().contains(query)) {
-                displayBookInfo(book);
-                found = true;
-                break; // Exit condition once the book is found
-            }
-        }
-        if (!found) {
-            System.out.println("No books found for the search query.");
-        }
-    }
-
     // CWE-1109: Avoid using the same variable for multiple purposes within reservation logic
     public void reserveBook(User user, String bookTitle) {
         Book reservedBook = null;
