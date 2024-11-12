@@ -34,6 +34,9 @@ public class Account {
         this.username = username;
     }
 
+    private int loginAttempts =0;//Counter for login attempts
+    private static final int MAX_ATTEMPTS =3;// Maximum allowed attempts
+
     /*
      * This function will check the username and the hashed password. If they match,
      * it will create an auth token to be used for the rest of the user's session.
@@ -47,12 +50,25 @@ public class Account {
          * access,
          * preventing unauthorized access due to case mismatches.
          * Example if this rule was broken: "admin" == "aDmIn".
+         * 
+         * CWE-835: Loop with unreachable exit condition (Infinite Loop).
+         * This method limits login attempts to prevent excessive or infinite login
+         * attempts, adding a counter that restricts the user to a maximum number of
+         * consecutive failed login attempts. Once the limit is reached, further
+         * login attempts are temporarily blocked until the counter is reset, ensuring
+         * that the method cannot loop infinitely due to repeated failed attempts.
          */
+        if(loginAttempts >= MAX_ATTEMPTS){
+            System.out.println("Account temporarily locked due to too many login failures.");
+            return false;
+        }
         if (this.username.equals(username) && encoder.matches(password, this.hashedPassword)) {
             generateAuthToken();
             System.out.println("Log in successful. Auth token: " + authToken);
+            loginAttempts = 0;//reset attempt counter on successful login
             return true;
         } else {
+            loginAttempts++;//Increment counter on failed login
             System.out.println("Log in failed: incorrect username or password");
             return false;
         }
