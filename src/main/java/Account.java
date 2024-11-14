@@ -34,8 +34,8 @@ public class Account {
         this.username = username;
     }
 
-    private int loginAttempts =0;//Counter for login attempts
-    private static final int MAX_ATTEMPTS =3;// Maximum allowed attempts
+    private int loginAttempts = 0;// Counter for login attempts
+    private static final int MAX_ATTEMPTS = 3;// Maximum allowed attempts
 
     /*
      * This function will check the username and the hashed password. If they match,
@@ -58,17 +58,17 @@ public class Account {
          * login attempts are temporarily blocked until the counter is reset, ensuring
          * that the method cannot loop infinitely due to repeated failed attempts.
          */
-        if(loginAttempts >= MAX_ATTEMPTS){
+        if (loginAttempts >= MAX_ATTEMPTS) {
             System.out.println("Account temporarily locked due to too many login failures.");
             return false;
         }
         if (this.username.equals(username) && encoder.matches(password, this.hashedPassword)) {
             generateAuthToken();
             System.out.println("Log in successful. Auth token: " + authToken);
-            loginAttempts = 0;//reset attempt counter on successful login
+            loginAttempts = 0;// reset attempt counter on successful login
             return true;
         } else {
-            loginAttempts++;//Increment counter on failed login
+            loginAttempts++;// Increment counter on failed login
             System.out.println("Log in failed: incorrect username or password");
             return false;
         }
@@ -212,17 +212,4 @@ public class Account {
         return this.username;
     }
 
-    // Example code on how an 'Account' object might be used
-    public static void main(String[] args) {
-        Account myAccount = new Account("Daulton", "password1234");
-        myAccount.printUsername();
-        myAccount.printHashedPassword();
-        myAccount.logIn("Daulton", "password1234");
-        myAccount.secureChangePassword(myAccount.getAuthToken(), "pword5678");
-        myAccount.printHashedPassword();
-        myAccount.logIn("Daulton", "password");
-        myAccount.logIn("Daulton", "pword5678");
-        myAccount.secureChangePassword(myAccount.getAuthToken(), "gword");
-        myAccount.secureChangePassword(myAccount.getAuthToken(), "gword");
-    }
 }
