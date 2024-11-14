@@ -199,10 +199,6 @@ public class Account {
         System.out.println(getUsername());
     }
 
-    private void printHashedPassword() {
-        System.out.println(this.hashedPassword);
-    }
-
     // 'Account' getters.
     public String getAuthToken() {
         return this.authToken;
