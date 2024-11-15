@@ -10,11 +10,9 @@ import java.io.FileWriter;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
-    private List<User> users; // Only relevant within the context of this library system
 
     public LibraryManagementSystem() {
         this.books = new ArrayList<>();
-        this.users = new ArrayList<>();
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
