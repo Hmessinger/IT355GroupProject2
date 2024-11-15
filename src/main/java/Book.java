@@ -1,3 +1,4 @@
+import java.security.SecureRandom;
 
 public class Book {
   private int id;
@@ -8,7 +9,7 @@ public class Book {
   private boolean checkedOut;
 
   public Book(int id, String bookTitle, String author, double price, int stock, boolean checkedOut) {
-    this.id = id;
+    this.id = setID(id);
     this.bookTitle = bookTitle;
     this.author = author;
     this.price = price;
@@ -16,9 +17,21 @@ public class Book {
     this.checkedOut = checkedOut;
   }
 
-  // Returns the book title
+  // Returns the book id
   public int getId() {
     return id;
+  }
+
+  public int setID(int id) {
+        SecureRandom random = new SecureRandom();
+
+        byte[] bytes = new byte[20];
+        random.nextBytes(bytes);
+
+        int randomInt = random.nextInt(100000, 999999);
+
+        this.id = randomInt;
+        return this.id;
   }
 
   // Returns the stock

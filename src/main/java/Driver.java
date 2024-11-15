@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -86,6 +84,17 @@ public class Driver {
         LibraryManagementSystem lbm = new LibraryManagementSystem();
 
         System.out.print("\nAccount created successfully!\n");
+        System.out.print("\nPlease LOG IN!\n");
+
+        boolean logInStatus = false;
+        while (!logInStatus) {
+            System.out.println("Username: ");
+            String username = scan.nextLine();
+            System.out.println("Password: ");
+            String password = scan.nextLine();
+
+            logInStatus = account.logIn(username, password);
+        }
 
         System.out.println("\n     Library Menu");
         System.out.println("======================");
@@ -93,8 +102,8 @@ public class Driver {
         // Loop is working correctly
         int choice = 0;
         while (choice != 9) {
-            System.out.println("1: ");
-            System.out.println("2: ");
+            System.out.println("1: Account Menu");
+            System.out.println("2: Display Account Info");
             System.out.println("3: Display Books");
             System.out.println("4: Retrieve a Book");
             System.out.println("5: Display Specific Number of Books");
@@ -110,10 +119,35 @@ public class Driver {
 
             if (choice == 1) {
 
+                int accountChoice = 0;
+                while (accountChoice != 3) {
+                    System.out.println("\nAccount Menu");
+                    System.out.println("----------------------------------");
+                    System.out.println("1: Print account details");
+                    System.out.println("2: Change Password");
+                    System.out.println("3: Back to Menu");
+                    accountChoice = scan.nextInt();
+                    scan.nextLine();
+                    System.out.println("You selected: " + accountChoice);
+                    if (accountChoice == 1) {
+                        System.out.println("Username: " + account.getUsername());
+                        System.out.println("Hashed Password: " + account.getHashedPassword());
+                        System.out.println("Auth Token: " + account.getAuthToken());
+                    }
+
+                    if (accountChoice == 2) {
+                        System.out.println("please enter new password: ");
+                        String password = scan.nextLine();
+                        account.changePassword(account.getAuthToken(), password);
+                    }
+                }
+
             }
 
             if (choice == 2) {
-
+                System.out.println("\nUser ID: " + account.getID());
+                System.out.print("Username: ");
+                account.printUsername();
             }
 
             if (choice == 3) {

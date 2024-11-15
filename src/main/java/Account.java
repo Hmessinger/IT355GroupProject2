@@ -16,6 +16,7 @@ public class Account {
     private String hashedPassword;
     private BCryptPasswordEncoder encoder;
     private String username;
+    private int id;
     private String authToken;
     private ArrayList<Integer> checkedOutBooks;
 
@@ -35,6 +36,7 @@ public class Account {
 
         this.hashedPassword = encoder.encode(password);
         this.username = username;
+        this.id = setID(id);
         this.checkedOutBooks = new ArrayList<Integer>();
     }
 
@@ -208,9 +210,29 @@ public class Account {
         return this.authToken;
     }
 
+    public String getHashedPassword() {
+        return this.hashedPassword;
+    }
+
     public String getUsername() {
         return this.username;
     }
+
+    public int getID() {
+        return id;
+    }
+
+    public int setID(int id) {
+        SecureRandom random = new SecureRandom();
+
+        byte[] bytes = new byte[20];
+        random.nextBytes(bytes);
+
+        int randomInt = random.nextInt(10000, 99999);
+
+        this.id = randomInt;
+        return this.id;
+  }
 
     /*
      * CWE-374: Passing Mutable Objects to an Untrusted Method
