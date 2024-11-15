@@ -240,6 +240,8 @@ public class Account {
     public ArrayList<Integer> getCheckoutBooks() {
         ArrayList<Integer> temp_list = new ArrayList<Integer>();
         temp_list = (ArrayList) checkedOutBooks.clone();
+        if (temp_list == null)
+            System.out.println("You have 0 books.");
         return temp_list;
     }
 

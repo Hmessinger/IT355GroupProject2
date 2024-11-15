@@ -114,6 +114,7 @@ public class Driver {
                 System.out.println("\nUser ID: " + account.getID());
                 System.out.print("Username: ");
                 account.printUsername();
+                account.getCheckoutBooks();
             }
 
             if (choice == 3) {
