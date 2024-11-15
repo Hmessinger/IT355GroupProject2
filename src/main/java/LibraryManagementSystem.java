@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class LibraryManagementSystem {
@@ -11,14 +12,16 @@ public class LibraryManagementSystem {
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
-    public void displayCatalog() {
+    public void displayCatalog(Book[] books) {
         for (Book book : books) {
             displayBookInfo(book); // Centralized call to avoid code repetition
         }
     }
 
     private void displayBookInfo(Book book) {
-        System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
+        System.out
+                .println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor()
+                        + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
     }
 
     // CWE-563: Checkout book functionality without unnecessary variable assignments
@@ -38,7 +41,9 @@ public class LibraryManagementSystem {
         System.out.println("Book not found.");
         return false;
     }
-    // CWE-1109: Avoid using the same variable for multiple purposes within reservation logic
+
+    // CWE-1109: Avoid using the same variable for multiple purposes within
+    // reservation logic
     public void reserveBook(User user, String bookTitle) {
         Book reservedBook = null;
         for (Book book : books) {
@@ -55,4 +60,3 @@ public class LibraryManagementSystem {
         }
     }
 }
-
