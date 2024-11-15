@@ -1,5 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
@@ -11,15 +18,56 @@ public class LibraryManagementSystem {
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
-    public void displayCatalog() {
+    public void displayCatalog(ArrayList<Book> books) {
         for (Book book : books) {
             System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
         }
     }
 
-    private void displayBookInfo(Book book) {
-        System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
+    public void loadBooksFromFile(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    String title = parts[0].trim();
+                    String author = parts[1].trim();
+                    int stock = Integer.parseInt(parts[2].trim());
+                    books.add(new Book(title, author, stock));
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
     }
+
+    public void displayBooks() {
+        for (Book book : books) {
+            System.out.println("Title: " + book.getTitle() +
+                    ", Author: " + book.getAuthor() +
+                    ", Stock: " + book.getStock());
+        }
+    }
+
+    private void displayBookInfo(Book book) {
+        System.out
+                .println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor()
+                        + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
+    }
+
+    // CWE-253: Incorrect Check of Function Return Value
+    // It properly checks the return value from user.hasReachedBorrowLimit() and
+    // ensures that
+    // all error conditions, such as a user reaching the borrow limit or the book
+    // not being found, are handled by returning false and providing clear feedback.
+
+    // CWE-253: Incorrect Check of Function Return Value
+    // It properly checks the return value from user.hasReachedBorrowLimit() and
+    // ensures that
+    // all error conditions, such as a user reaching the borrow limit or the book
+    // not being found, are handled by returning false and providing clear feedback.
 
     // CWE-563: Checkout book functionality without unnecessary variable assignments
     public boolean checkoutBook(User user, String bookTitle) {
@@ -38,7 +86,9 @@ public class LibraryManagementSystem {
         System.out.println("Book not found.");
         return false;
     }
-    // CWE-1109: Avoid using the same variable for multiple purposes within reservation logic
+
+    // CWE-1109: Avoid using the same variable for multiple purposes within
+    // reservation logic
     public void reserveBook(User user, String bookTitle) {
         Book reservedBook = null;
         for (Book book : books) {
@@ -54,5 +104,54 @@ public class LibraryManagementSystem {
             System.out.println("Unable to reserve book.");
         }
     }
-}
 
+    // Save books to file
+    public void saveBooksToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Book book : books) {
+                // Save each book's title, author, and stock in a CSV format
+                writer.write(book.getTitle() + "," + book.getAuthor() + "," + book.getStock());
+                writer.newLine();
+            }
+            System.out.println("Books list saved to " + filename);
+        } catch (IOException e) {
+            System.out.println("Error saving books to file: " + e.getMessage());
+        }
+    }
+
+    // CWE 1116: Innaccurate Comments
+    // This method will add a new book to the library taken by user input
+    public void addBook(String filename) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get book details from the user
+        System.out.println("Enter the book title: ");
+        String title = scanner.nextLine();
+
+        System.out.println("Enter the book author: ");
+        String author = scanner.nextLine();
+
+        System.out.println("Enter the stock quantity: ");
+        int stock = scanner.nextInt();
+
+        // Create a new Book object and add it to the books list
+        Book newBook = new Book(title, author, stock);
+        books.add(newBook);
+
+        System.out.println("New book added: " + title + " by " + author + " with " + stock + " copies.");
+
+        // Save the updated list of books to the file
+        saveBooksToFile(filename);
+    }
+
+    public static void main(String[] args) {
+        LibraryManagementSystem library = new LibraryManagementSystem();
+        // Load books from the file
+        String filename = "books.txt";
+        library.loadBooksFromFile(filename);
+        library.displayBooks();
+
+        // Allow the user to add another book and save it to the file
+        library.addBook(filename);
+    }
+}
