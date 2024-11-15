@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,7 +7,6 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
@@ -18,7 +18,7 @@ public class LibraryManagementSystem {
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
-    public void displayCatalog() {
+    public void displayCatalog(ArrayList<Book> books) {
         for (Book book : books) {
             displayBookInfo(book); // Centralized call to avoid code repetition
         }
@@ -42,22 +42,30 @@ public class LibraryManagementSystem {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
-    
+
     public void displayBooks() {
         for (Book book : books) {
-            System.out.println("Title: " + book.getTitle() + 
-                             ", Author: " + book.getAuthor() + 
-                             ", Stock: " + book.getStock());
+            System.out.println("Title: " + book.getTitle() +
+                    ", Author: " + book.getAuthor() +
+                    ", Stock: " + book.getStock());
         }
     }
 
     private void displayBookInfo(Book book) {
-        System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Stock: " + book.getStock());
+        System.out
+                .println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor()
+                        + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
     }
 
+    // CWE-253: Incorrect Check of Function Return Value
+    // It properly checks the return value from user.hasReachedBorrowLimit() and
+    // ensures that
+    // all error conditions, such as a user reaching the borrow limit or the book
+    // not being found, are handled by returning false and providing clear feedback.
 
     // CWE-253: Incorrect Check of Function Return Value
-    // It properly checks the return value from user.hasReachedBorrowLimit() and ensures that
+    // It properly checks the return value from user.hasReachedBorrowLimit() and
+    // ensures that
     // all error conditions, such as a user reaching the borrow limit or the book
     // not being found, are handled by returning false and providing clear feedback.
 
@@ -78,7 +86,9 @@ public class LibraryManagementSystem {
         System.out.println("Book not found.");
         return false;
     }
-    // CWE-1109: Avoid using the same variable for multiple purposes within reservation logic
+
+    // CWE-1109: Avoid using the same variable for multiple purposes within
+    // reservation logic
     public void reserveBook(User user, String bookTitle) {
         Book reservedBook = null;
         for (Book book : books) {
@@ -131,12 +141,12 @@ public class LibraryManagementSystem {
         System.out.println("New book added: " + title + " by " + author + " with " + stock + " copies.");
 
         // Save the updated list of books to the file
-        saveBooksToFile(filename);  
+        saveBooksToFile(filename);
     }
 
     public static void main(String[] args) {
         LibraryManagementSystem library = new LibraryManagementSystem();
-         // Load books from the file
+        // Load books from the file
         String filename = "books.txt";
         library.loadBooksFromFile(filename);
         library.displayBooks();

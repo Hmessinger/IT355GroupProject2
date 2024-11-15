@@ -1,5 +1,7 @@
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -15,6 +17,7 @@ public class Account {
     private BCryptPasswordEncoder encoder;
     private String username;
     private String authToken;
+    private ArrayList<Integer> checkedOutBooks;
 
     Account(String username, String password) {
         this.encoder = new BCryptPasswordEncoder();
@@ -32,6 +35,7 @@ public class Account {
 
         this.hashedPassword = encoder.encode(password);
         this.username = username;
+        this.checkedOutBooks = new ArrayList<Integer>();
     }
 
     private int loginAttempts = 0;// Counter for login attempts
@@ -206,6 +210,50 @@ public class Account {
 
     public String getUsername() {
         return this.username;
+    }
+
+    /*
+     * CWE-374: Passing Mutable Objects to an Untrusted Method
+     * Here we are returning a clone of the checkedOutBooks arraylist. The
+     * checkedOutBooks arrayList is a mutable object, so we do not want to return
+     * the original list. If we returned the original list, this would allow
+     * untrusted or external methods to be able to modify the contents in the list.
+     */
+    public ArrayList<Integer> getCheckoutBooks() {
+        ArrayList<Integer> temp_list = new ArrayList<Integer>();
+        temp_list = (ArrayList) checkedOutBooks.clone();
+        return temp_list;
+    }
+
+    public void addBookToCheckedOut(int bookId) {
+        this.checkedOutBooks.add(bookId);
+    }
+
+    public void removeBookFromCheckedOut(int bookId) {
+        int bookIdIndex = this.checkedOutBooks.indexOf(bookId);
+        this.checkedOutBooks.remove(bookIdIndex);
+    }
+
+    /*
+     * CWE-374: Passing Mutable Objects to an Untrusted Method
+     * Here we are returning a clone of the checkedOutBooks arraylist. The
+     * checkedOutBooks arrayList is a mutable object, so we do not want to return
+     * the original list. If we returned the original list, this would allow
+     * untrusted or external methods to be able to modify the contents in the list.
+     */
+    public ArrayList<Integer> getCheckoutBooks() {
+        ArrayList<Integer> temp_list = new ArrayList<Integer>();
+        temp_list = (ArrayList) checkedOutBooks.clone();
+        return temp_list;
+    }
+
+    public void addBookToCheckedOut(int bookId) {
+        this.checkedOutBooks.add(bookId);
+    }
+
+    public void removeBookFromCheckedOut(int bookId) {
+        int bookIdIndex = this.checkedOutBooks.indexOf(bookId);
+        this.checkedOutBooks.remove(bookIdIndex);
     }
 
 }
