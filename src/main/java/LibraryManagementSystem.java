@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+// import src.main.java.Book;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
@@ -17,8 +21,35 @@ public class LibraryManagementSystem {
         }
     }
 
+    public void loadBooksFromFile(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    String title = parts[0].trim();
+                    String author = parts[1].trim();
+                    int stock = Integer.parseInt(parts[2].trim());
+                    books.add(new Book(title, author, stock));
+                }
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+    }
+    
+    public void displayBooks() {
+        for (Book book : books) {
+            System.out.println("Title: " + book.getTitle() + 
+                             ", Author: " + book.getAuthor() + 
+                             ", Stock: " + book.getStock());
+        }
+    }
+
     private void displayBookInfo(Book book) {
-        System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
+        System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Stock: " + book.getStock());
     }
 
     // CWE-563: Checkout book functionality without unnecessary variable assignments
@@ -54,5 +85,9 @@ public class LibraryManagementSystem {
             System.out.println("Unable to reserve book.");
         }
     }
+    public static void main(String[] args) {
+        LibraryManagementSystem library = new LibraryManagementSystem();
+        library.loadBooksFromFile("books.txt"); // Load books from the file
+        library.displayBooks(); // Display all books
+    }
 }
-
