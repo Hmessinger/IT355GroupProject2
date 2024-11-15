@@ -245,6 +245,14 @@ public class Driver {
 
             if (choice == 8) {
                 ArrayList<Integer> checkedOutList = account.getCheckoutBooks();
+                /*
+                 * CWE-1071: Empty Code Block
+                 * In this section of the code and throughout the entire code base, we do not
+                 * have any empty blocks. In situation we have an if else statement and neither
+                 * blocks are empty. Empty code blocks can cause some confusion between
+                 * developers. They also could signify that there is some missing code
+                 * functionality/logic.
+                 */
                 if (!checkedOutList.isEmpty()) {
                     System.out.println("\nThe books you currently have checked out are: ");
                     for (Book book : books) {
