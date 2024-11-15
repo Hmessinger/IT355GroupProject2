@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -104,7 +102,7 @@ public class Driver {
         // Loop is working correctly
         int choice = 0;
         while (choice != 9) {
-            System.out.println("1: Account Menu");
+            System.out.println("1: ");
             System.out.println("2: ");
             System.out.println("3: Display Books");
             System.out.println("4: Retrieve a Book");
@@ -147,7 +145,9 @@ public class Driver {
             }
 
             if (choice == 2) {
-
+                System.out.println("\nUser ID: " + account.getID());
+                System.out.print("Username: ");
+                account.printUsername();
             }
 
             if (choice == 3) {
