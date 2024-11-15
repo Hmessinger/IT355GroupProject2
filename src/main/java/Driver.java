@@ -9,41 +9,36 @@ public class Driver {
     public static void main(String[] args) {
 
         // A hashmap would reduce the number of for loops
-        // HashMap<Integer, Book> books1 = new HashMap<>();
-        // books1.put(1, new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(2, new Book(2, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(3, new Book(3, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(4, new Book(4, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(5, new Book(5, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(6, new Book(6, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(7, new Book(7, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(8, new Book(8, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(9, new Book(9, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
-        // books1.put(10, new Book(10, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
-        // false));
+        ArrayList<Book> books = new ArrayList<Book>();
+        books.add(new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
+                false));
+        books.add(new Book(2, "1984", "George Orwell", 15.50, 8, false));
+        books.add(new Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 40.0, 5,
+                false));
+        books.add(new Book(4, "The Catcher in the Rye", "J.D. Salinger", 15.99, 7,
+                false));
+        books.add(new Book(5, "Moby Dick", "Herman Melville", 12.99, 6, false));
+        books.add(new Book(6, "Pride and Prejudice", "Jane Austen", 23.0, 4,
+                false));
+        books.add(new Book(7, "The Hobbit", "J.R.R. Tolkien", 48.99, 9, false));
+        books.add(new Book(8, "War and Peace", "Leo Tolstoy", 9.99, 3, false));
+        books.add(new Book(9, "Crime and Punishment", "Fyodor Dostoevsky", 18.0,
+                4, false));
+        books.add(new Book(10, "The Odyssey", "Homer", 20.0, 7, false));
 
         // Create an array of books that are in the library
-        Book[] books = {
-                new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10, false),
-                new Book(2, "1984", "George Orwell", 15.50, 8, false),
-                new Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 40.0, 5, false),
-                new Book(4, "The Catcher in the Rye", "J.D. Salinger", 15.99, 7, false),
-                new Book(5, "Moby Dick", "Herman Melville", 12.99, 6, false),
-                new Book(6, "Pride and Prejudice", "Jane Austen", 23.0, 4, false),
-                new Book(7, "The Hobbit", "J.R.R. Tolkien", 48.99, 9, false),
-                new Book(8, "War and Peace", "Leo Tolstoy", 9.99, 3, false),
-                new Book(9, "Crime and Punishment", "Fyodor Dostoevsky", 18.0, 4, false),
-                new Book(10, "The Odyssey", "Homer", 20.0, 7, false)
-        };
+        // Book[] books = {
+        // new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10, false),
+        // new Book(2, "1984", "George Orwell", 15.50, 8, false),
+        // new Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 40.0, 5, false),
+        // new Book(4, "The Catcher in the Rye", "J.D. Salinger", 15.99, 7, false),
+        // new Book(5, "Moby Dick", "Herman Melville", 12.99, 6, false),
+        // new Book(6, "Pride and Prejudice", "Jane Austen", 23.0, 4, false),
+        // new Book(7, "The Hobbit", "J.R.R. Tolkien", 48.99, 9, false),
+        // new Book(8, "War and Peace", "Leo Tolstoy", 9.99, 3, false),
+        // new Book(9, "Crime and Punishment", "Fyodor Dostoevsky", 18.0, 4, false),
+        // new Book(10, "The Odyssey", "Homer", 20.0, 7, false)
+        // };
 
         Scanner scan = new Scanner(System.in);
         String userName;
@@ -170,14 +165,14 @@ public class Driver {
                 try {
                     int numOfBooks = scan.nextInt();
                     scan.nextLine();
-                    if (numOfBooks <= books.length) {
+                    if (numOfBooks <= books.size()) {
                         for (int i = 0; i < numOfBooks; i++) {
-                            System.out.println(books[i].toString());
+                            System.out.println(books.get(i).toString());
                         }
                     } else {
                         System.out.println(
                                 "The number you entered is greater than the number of books that are in the library. There are only "
-                                        + books.length + " books in the library.");
+                                        + books.size() + " books in the library.");
                     }
 
                 } catch (InputMismatchException e) {
@@ -251,6 +246,7 @@ public class Driver {
             if (choice == 8) {
                 ArrayList<Integer> checkedOutList = account.getCheckoutBooks();
                 if (!checkedOutList.isEmpty()) {
+                    System.out.println("\nThe books you currently have checked out are: ");
                     for (Book book : books) {
                         if (isCheckedOut(book.getId(), checkedOutList)) {
                             System.out.println(book.simpleBookInfo());
@@ -280,5 +276,4 @@ public class Driver {
         }
         return false;
     }
-
 }

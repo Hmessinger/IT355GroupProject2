@@ -12,7 +12,7 @@ public class LibraryManagementSystem {
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
-    public void displayCatalog(Book[] books) {
+    public void displayCatalog(ArrayList<Book> books) {
         for (Book book : books) {
             displayBookInfo(book); // Centralized call to avoid code repetition
         }
