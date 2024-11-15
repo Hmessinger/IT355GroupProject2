@@ -89,16 +89,16 @@ public class LibraryManagementSystem {
 
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
-    public void reserveBook(User user, String bookTitle) {
+    public void reserveBook(Account account, String bookTitle) {
         Book reservedBook = null;
         for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(bookTitle) && !user.hasBorrowed(book)) {
+            if (book.getTitle().equalsIgnoreCase(bookTitle) && !account.hasBorrowed(book)) {
                 reservedBook = book;
                 break;
             }
         }
         if (reservedBook != null) {
-            user.reserveBook(reservedBook); // Dedicated variable for reservation status
+            account.reserveBook(reservedBook); // Dedicated variable for reservation status
             System.out.println("Book reserved successfully.");
         } else {
             System.out.println("Unable to reserve book.");
