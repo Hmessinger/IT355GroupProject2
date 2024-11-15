@@ -158,14 +158,4 @@ public class Book {
     return price * 0.90;
   }
 
-  // Updates the book title, ensuring it is not empty or null.
-  // Example of CWE-390 by detecting error conditions and taking action on them.
-  public void readBookTitle(String newTitle) {
-    if (newTitle == null || newTitle.isEmpty()) {
-      System.out.println("Error: Title cannot be empty or null."); // Take action on error
-      return;
-    }
-    bookTitle = newTitle;
-  }
-
 }

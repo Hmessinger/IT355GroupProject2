@@ -233,27 +233,4 @@ public class Account {
         int bookIdIndex = this.checkedOutBooks.indexOf(bookId);
         this.checkedOutBooks.remove(bookIdIndex);
     }
-
-    /*
-     * CWE-374: Passing Mutable Objects to an Untrusted Method
-     * Here we are returning a clone of the checkedOutBooks arraylist. The
-     * checkedOutBooks arrayList is a mutable object, so we do not want to return
-     * the original list. If we returned the original list, this would allow
-     * untrusted or external methods to be able to modify the contents in the list.
-     */
-    public ArrayList<Integer> getCheckoutBooks() {
-        ArrayList<Integer> temp_list = new ArrayList<Integer>();
-        temp_list = (ArrayList) checkedOutBooks.clone();
-        return temp_list;
-    }
-
-    public void addBookToCheckedOut(int bookId) {
-        this.checkedOutBooks.add(bookId);
-    }
-
-    public void removeBookFromCheckedOut(int bookId) {
-        int bookIdIndex = this.checkedOutBooks.indexOf(bookId);
-        this.checkedOutBooks.remove(bookIdIndex);
-    }
-
 }
