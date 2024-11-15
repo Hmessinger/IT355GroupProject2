@@ -3,7 +3,10 @@ import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-// import src.main.java.Book;
+import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
@@ -85,9 +88,52 @@ public class LibraryManagementSystem {
             System.out.println("Unable to reserve book.");
         }
     }
+
+    // Save books to file
+    public void saveBooksToFile(String filename) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Book book : books) {
+                // Save each book's title, author, and stock in a CSV format
+                writer.write(book.getTitle() + "," + book.getAuthor() + "," + book.getStock());
+                writer.newLine();
+            }
+            System.out.println("Books list saved to " + filename);
+        } catch (IOException e) {
+            System.out.println("Error saving books to file: " + e.getMessage());
+        }
+    }
+
+    public void addBook(String filename) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Get book details from the user
+        System.out.println("Enter the book title: ");
+        String title = scanner.nextLine();
+
+        System.out.println("Enter the book author: ");
+        String author = scanner.nextLine();
+
+        System.out.println("Enter the stock quantity: ");
+        int stock = scanner.nextInt();
+
+        // Create a new Book object and add it to the books list
+        Book newBook = new Book(title, author, stock);
+        books.add(newBook);
+
+        System.out.println("New book added: " + title + " by " + author + " with " + stock + " copies.");
+
+        // Save the updated list of books to the file
+        saveBooksToFile(filename);  
+    }
+
     public static void main(String[] args) {
         LibraryManagementSystem library = new LibraryManagementSystem();
-        library.loadBooksFromFile("books.txt"); // Load books from the file
-        library.displayBooks(); // Display all books
+         // Load books from the file
+        String filename = "books.txt";
+        library.loadBooksFromFile(filename);
+        library.displayBooks();
+
+        // Allow the user to add another book and save it to the file
+        library.addBook(filename);
     }
 }
