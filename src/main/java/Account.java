@@ -208,6 +208,10 @@ public class Account {
         return this.authToken;
     }
 
+    public String getHashedPassword() {
+        return this.hashedPassword;
+    }
+
     public String getUsername() {
         return this.username;
     }
