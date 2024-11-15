@@ -100,7 +100,7 @@ public class Driver {
             System.out.println("5: Display Specific Number of Books");
             System.out.println("6: Checkout a Book");
             System.out.println("7: Return a Book");
-            System.out.println("8: Display the books you have currently have checked out");
+            System.out.println("8: Display the books you currently have checked out");
             System.out.println("9: Exit");
 
             System.out.println("Please input your choice <1-9>");
@@ -192,26 +192,11 @@ public class Driver {
                  * exception. We are ensuring that if an exception is thrown it will not go
                  * uncaught.
                  */
-                boolean bookFound = false;
+                // boolean bookFound = false;
                 try {
                     int checkoutBookId = scan.nextInt();
                     scan.nextLine();
-                    for (Book book : books) {
-                        if (book.getId() == checkoutBookId) {
-                            if (!book.isCheckedOut()) {
-                                account.addBookToCheckedOut(checkoutBookId);
-                                book.setCheckedOutTrue();
-                                System.out.println("You have successfully checked out '" + book.getTitle() + "'.");
-                            } else {
-                                System.out.println("That book is currently checked out.");
-                            }
-                            bookFound = true;
-                            break;
-                        }
-                    }
-                    if (!bookFound) {
-                        System.out.println("That book ID does not exist in our system.");
-                    }
+                    lbm.checkoutBook(account, checkoutBookId, books);
                 } catch (InputMismatchException e) {
                     System.out.println("The input you entered was not an integer value.");
                     scan.nextLine();

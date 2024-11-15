@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -70,22 +71,38 @@ public class LibraryManagementSystem {
     // not being found, are handled by returning false and providing clear feedback.
 
     // CWE-563: Checkout book functionality without unnecessary variable assignments
-    public boolean checkoutBook(User user, String bookTitle) {
+    public boolean checkoutBook(Account account, int bookId, ArrayList<Book> books) {
         for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(bookTitle)) {
-                if (!user.hasReachedBorrowLimit()) {
-                    user.borrowBook(book);
-                    System.out.println("Book checked out successfully.");
-                    return true; // Return here to prevent unnecessary assignments
+            if (book.getId() == bookId) {
+                if (!book.isCheckedOut()) {
+                    account.addBookToCheckedOut(bookId);
+                    book.setCheckedOutTrue();
+                    System.out.println("You have successfully checked out '" + book.getTitle() + "'.");
                 } else {
-                    System.out.println("User has reached the borrowing limit.");
-                    return false;
+                    System.out.println("That book is currently checked out.");
                 }
+                return true;
             }
         }
-        System.out.println("Book not found.");
+        System.out.println("That book ID does not exist in our system.");
         return false;
     }
+
+    // for (Book book : books) {
+    // if (book.getTitle().equalsIgnoreCase(bookTitle)) {
+    // if (!user.hasReachedBorrowLimit()) {
+    // user.borrowBook(book);
+    // System.out.println("Book checked out successfully.");
+    // return true; // Return here to prevent unnecessary assignments
+    // } else {
+    // System.out.println("User has reached the borrowing limit.");
+    // return false;
+    // }
+    // }
+    // }
+    // System.out.println("Book not found.");
+    // return false;
+    // }
 
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
