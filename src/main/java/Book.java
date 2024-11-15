@@ -17,7 +17,6 @@ public class Book {
     return stock;
   }
 
-  // CWE 190 Integer Overflow or Wraparound
   public void addStock(int amount) {
     if (amount < 0) {
         System.out.println("Error: Cannot add negative amount!");

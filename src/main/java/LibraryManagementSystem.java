@@ -55,6 +55,12 @@ public class LibraryManagementSystem {
         System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Stock: " + book.getStock());
     }
 
+
+    // CWE-253: Incorrect Check of Function Return Value
+    // It properly checks the return value from user.hasReachedBorrowLimit() and ensures that
+    // all error conditions, such as a user reaching the borrow limit or the book
+    // not being found, are handled by returning false and providing clear feedback.
+
     // CWE-563: Checkout book functionality without unnecessary variable assignments
     public boolean checkoutBook(User user, String bookTitle) {
         for (Book book : books) {
@@ -103,6 +109,8 @@ public class LibraryManagementSystem {
         }
     }
 
+    // CWE 1116: Innaccurate Comments
+    // This method will add a new book to the library taken by user input
     public void addBook(String filename) {
         Scanner scanner = new Scanner(System.in);
 
