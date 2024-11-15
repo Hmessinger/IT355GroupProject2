@@ -113,7 +113,9 @@ public class Driver {
             }
 
             if (choice == 2) {
-
+                System.out.println("Enter the title of the book to reserve: ");
+                String reserveTitle = scan.nextLine();
+                LibraryManagementSystem.reserveBook(account, reserveTitle);
             }
 
             if (choice == 3) {
