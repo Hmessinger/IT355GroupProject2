@@ -103,7 +103,7 @@ public class Driver {
         int choice = 0;
         while (choice != 9) {
             System.out.println("1: Account Menu");
-            System.out.println("2: Display Account Info");
+            System.out.println("2: ");
             System.out.println("3: Display Books");
             System.out.println("4: Retrieve a Book");
             System.out.println("5: Display Specific Number of Books");
