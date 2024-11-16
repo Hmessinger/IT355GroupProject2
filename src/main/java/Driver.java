@@ -131,8 +131,10 @@ public class Driver {
                     System.out.println("You selected: " + accountChoice);
                     if (accountChoice == 1) {
                         System.out.println("Username: " + account.getUsername());
+                        System.out.println("User ID: " + account.getID());
                         System.out.println("Hashed Password: " + account.getHashedPassword());
                         System.out.println("Auth Token: " + account.getAuthToken());
+                        System.out.println("Books Checked Out: " + account.getCheckoutBooks());
                     }
 
                     if (accountChoice == 2) {
@@ -145,9 +147,7 @@ public class Driver {
             }
 
             if (choice == 2) {
-                System.out.println("\nUser ID: " + account.getID());
-                System.out.print("Username: ");
-                account.printUsername();
+
             }
 
             if (choice == 3) {
