@@ -19,6 +19,9 @@ public class Account {
     private int id;
     private String authToken;
     private ArrayList<Integer> checkedOutBooks;
+    private List<Book> borrowedBooks;
+    private List<Book> reservedBooks;
+    private static final int BORROW_LIMIT = 3; // Avoid excessive global variables (CWE-1108)
 
     Account(String username, String password) {
         this.encoder = new BCryptPasswordEncoder();
@@ -38,6 +41,8 @@ public class Account {
         this.username = username;
         this.id = setID(id);
         this.checkedOutBooks = new ArrayList<Integer>();
+        this.borrowedBooks = new ArrayList<>();
+        this.reservedBooks = new ArrayList<>();
     }
 
     private int loginAttempts = 0;// Counter for login attempts
@@ -254,5 +259,21 @@ public class Account {
     public void removeBookFromCheckedOut(int bookId) {
         int bookIdIndex = this.checkedOutBooks.indexOf(bookId);
         this.checkedOutBooks.remove(bookIdIndex);
+    }
+
+    public boolean hasReachedBorrowLimit(){
+        return borrowedBooks.size() >= BORROW_LIMIT;
+    }
+
+    public void reserveBook(Book book){
+        reservedBooks.add(book);
+    }
+
+    public boolean hasBorrowed(Book book){
+        return borrowedBooks.contains(book);
+    }
+
+    public List<Book> getBorrowedBooks(){
+        return borrowedBooks;
     }
 }

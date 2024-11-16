@@ -11,17 +11,15 @@ import java.io.FileWriter;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
-    private List<User> users; // Only relevant within the context of this library system
 
     public LibraryManagementSystem() {
         this.books = new ArrayList<>();
-        this.users = new ArrayList<>();
     }
 
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
     public void displayCatalog(ArrayList<Book> books) {
         for (Book book : books) {
-            displayBookInfo(book); // Centralized call to avoid code repetition
+            System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
         }
     }
 
@@ -106,16 +104,16 @@ public class LibraryManagementSystem {
 
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
-    public void reserveBook(User user, String bookTitle) {
+    public void reserveBook(Account account, String bookTitle) {
         Book reservedBook = null;
         for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(bookTitle) && !user.hasBorrowed(book)) {
+            if (book.getTitle().equalsIgnoreCase(bookTitle) && !account.hasBorrowed(book)) {
                 reservedBook = book;
                 break;
             }
         }
         if (reservedBook != null) {
-            user.reserveBook(reservedBook); // Dedicated variable for reservation status
+            account.reserveBook(reservedBook); // Dedicated variable for reservation status
             System.out.println("Book reserved successfully.");
         } else {
             System.out.println("Unable to reserve book.");
