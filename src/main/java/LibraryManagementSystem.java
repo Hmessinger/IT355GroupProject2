@@ -80,22 +80,6 @@ public class LibraryManagementSystem {
         return false;
     }
 
-    // for (Book book : books) {
-    // if (book.getTitle().equalsIgnoreCase(bookTitle)) {
-    // if (!user.hasReachedBorrowLimit()) {
-    // user.borrowBook(book);
-    // System.out.println("Book checked out successfully.");
-    // return true; // Return here to prevent unnecessary assignments
-    // } else {
-    // System.out.println("User has reached the borrowing limit.");
-    // return false;
-    // }
-    // }
-    // }
-    // System.out.println("Book not found.");
-    // return false;
-    // }
-
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
     public void reserveBook(Account account, String bookTitle) {
