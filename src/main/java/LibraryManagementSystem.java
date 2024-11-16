@@ -19,8 +19,14 @@ public class LibraryManagementSystem {
     // CWE-1041: Centralized method for displaying catalog to avoid redundant code
     public void displayCatalog(ArrayList<Book> books) {
         for (Book book : books) {
-            System.out.println("Title: " + book.getTitle() + ", Author: " + book.getAuthor() + ", Price: " + book.getPrice());
+            displayBookInfo(book); // Centralized call to avoid code repetition
         }
+    }
+
+    private void displayBookInfo(Book book) {
+        System.out
+                .println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor()
+                        + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
     }
 
     public void loadBooksFromFile(String filename) {
@@ -49,18 +55,6 @@ public class LibraryManagementSystem {
                     ", Stock: " + book.getStock());
         }
     }
-
-    private void displayBookInfo(Book book) {
-        System.out
-                .println("ID: " + book.getId() + ", Title: " + book.getTitle() + ", Author: " + book.getAuthor()
-                        + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
-    }
-
-    // CWE-253: Incorrect Check of Function Return Value
-    // It properly checks the return value from user.hasReachedBorrowLimit() and
-    // ensures that
-    // all error conditions, such as a user reaching the borrow limit or the book
-    // not being found, are handled by returning false and providing clear feedback.
 
     // CWE-253: Incorrect Check of Function Return Value
     // It properly checks the return value from user.hasReachedBorrowLimit() and

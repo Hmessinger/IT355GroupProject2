@@ -228,7 +228,6 @@ public class Driver {
                  * exception. We are ensuring that if an exception is thrown it will not go
                  * uncaught.
                  */
-                // boolean bookFound = false;
                 try {
                     int checkoutBookId = scan.nextInt();
                     scan.nextLine();
