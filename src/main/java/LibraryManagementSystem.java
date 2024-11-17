@@ -1,16 +1,18 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.List;
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
+    private final Lock bookLock = new ReentrantLock(); // CWE-667: Improper Locking - Proper locking mechanism for shared resource
+
 
     public LibraryManagementSystem() {
         this.books = new ArrayList<>();
@@ -29,6 +31,10 @@ public class LibraryManagementSystem {
                         + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
     }
 
+    // CWE-1024: Properly validating file reading and parsing inputs to avoid incompatible type issues
+    // CWE-1095: Loop Condition Value Update within the Loop - Proper loop control structures are used 
+    // to avoid modifying the loop condition inside the loop body.
+
     public void loadBooksFromFile(String filename) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -38,7 +44,13 @@ public class LibraryManagementSystem {
                 if (parts.length >= 3) {
                     String title = parts[0].trim();
                     String author = parts[1].trim();
-                    int stock = Integer.parseInt(parts[2].trim());
+                    int stock;
+                    try {
+                        stock = Integer.parseInt(parts[2].trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid stock value in file: " + parts[2].trim());
+                        continue;
+                    }
                     books.add(new Book(title, author, stock));
                 }
             }
@@ -64,37 +76,47 @@ public class LibraryManagementSystem {
 
     // CWE-563: Checkout book functionality without unnecessary variable assignments
     public boolean checkoutBook(Account account, int bookId, ArrayList<Book> books) {
-        for (Book book : books) {
-            if (book.getId() == bookId) {
-                if (!book.isCheckedOut()) {
-                    account.addBookToCheckedOut(bookId);
-                    book.setCheckedOutTrue();
-                    System.out.println("You have successfully checked out '" + book.getTitle() + "'.");
-                } else {
-                    System.out.println("That book is currently checked out.");
+        bookLock.lock(); // CWE-667: Acquire lock to prevent race conditions.
+        try {
+            for (Book book : books) {
+                if (book.getId() == bookId) {
+                    if (!book.isCheckedOut()) {
+                        account.addBookToCheckedOut(bookId);
+                        book.setCheckedOutTrue();
+                        System.out.println("You have successfully checked out '" + book.getTitle() + "'.");
+                    } else {
+                        System.out.println("That book is currently checked out.");
+                    }
+                    return true;
                 }
-                return true;
             }
+            System.out.println("That book ID does not exist in our system.");
+            return false;
+        } finally {
+            bookLock.unlock(); // CWE-833: Release lock to prevent deadlock
         }
-        System.out.println("That book ID does not exist in our system.");
-        return false;
     }
 
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
     public void reserveBook(Account account, String bookTitle) {
         Book reservedBook = null;
-        for (Book book : books) {
-            if (book.getTitle().equalsIgnoreCase(bookTitle) && !account.hasBorrowed(book)) {
-                reservedBook = book;
-                break;
+        bookLock.lock(); //  CWE-667:Acquire lock to prevent race conditions
+        try {
+            for (Book book : books) {
+                if (book.getTitle().equalsIgnoreCase(bookTitle) && !account.hasBorrowed(book)) {
+                    reservedBook = book;
+                    break;
+                }
             }
-        }
-        if (reservedBook != null) {
-            account.reserveBook(reservedBook); // Dedicated variable for reservation status
-            System.out.println("Book reserved successfully.");
-        } else {
-            System.out.println("Unable to reserve book.");
+            if (reservedBook != null) {
+                account.reserveBook(reservedBook); // Dedicated variable for reservation status
+                System.out.println("Book reserved successfully.");
+            } else {
+                System.out.println("Unable to reserve book.");
+            }
+        } finally {
+            bookLock.unlock(); // CWE-833: Release lock to prevent deadlock
         }
     }
 
@@ -125,7 +147,19 @@ public class LibraryManagementSystem {
         String author = scanner.nextLine();
 
         System.out.println("Enter the stock quantity: ");
-        int stock = scanner.nextInt();
+        int stock;
+        while (true) {
+            try {
+                stock = Integer.parseInt(scanner.nextLine()); // CWE-1287: Proper input validation
+                if (stock < 0) {
+                    System.out.println("Stock quantity cannot be negative. Please enter a valid integer:");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer for stock quantity: ");
+            }
+        }
 
         // Create a new Book object and add it to the books list
         Book newBook = new Book(title, author, stock);

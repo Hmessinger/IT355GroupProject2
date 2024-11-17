@@ -1,3 +1,4 @@
+import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 
 public class Book {
@@ -18,7 +19,7 @@ public class Book {
   }
 
   public Book(String bookTitle, String author, int stock) {
-    this.id = setID(id);
+    this.id = setID(0);
     this.bookTitle = bookTitle;
     this.author = author;
     this.stock = stock;
@@ -30,14 +31,18 @@ public class Book {
   }
 
   public int setID(int id) {
+    // CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
+    // Uses SecureRandom instead of Random to ensure cryptographic security when generating book IDs.
+
     SecureRandom random = new SecureRandom();
 
-    byte[] bytes = new byte[20];
+    byte[] bytes = new byte[4];
     random.nextBytes(bytes);
 
-    int randomInt = random.nextInt(100000, 999999);
+    int randomInt = ByteBuffer.wrap(bytes).getInt();
 
-    this.id = randomInt;
+    this.id = Math.abs(randomInt % 1_000_000);
+    
     return this.id;
   }
 

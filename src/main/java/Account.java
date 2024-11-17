@@ -1,3 +1,4 @@
+import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -39,7 +40,7 @@ public class Account {
 
         this.hashedPassword = encoder.encode(password);
         this.username = username;
-        this.id = setID(id);
+        this.id = setID(0);
         this.checkedOutBooks = new ArrayList<Integer>();
         this.borrowedBooks = new ArrayList<>();
         this.reservedBooks = new ArrayList<>();
@@ -228,14 +229,17 @@ public class Account {
     }
 
     public int setID(int id) {
+        // CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
+        // Uses SecureRandom instead of Random to ensure cryptographic security when generating book IDs.
+
         SecureRandom random = new SecureRandom();
 
-        byte[] bytes = new byte[20];
+        byte[] bytes = new byte[4];
         random.nextBytes(bytes);
 
-        int randomInt = random.nextInt(10000, 99999);
+        int randomInt = ByteBuffer.wrap(bytes).getInt();
 
-        this.id = randomInt;
+        this.id = Math.abs(randomInt % 100_000);
         return this.id;
   }
 

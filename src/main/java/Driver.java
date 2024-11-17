@@ -113,8 +113,12 @@ public class Driver {
             System.out.println("9: Exit");
 
             System.out.println("Please input your choice <1-9>");
-            choice = scan.nextInt();
-            scan.nextLine();
+            try {
+                choice = Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid choice. Please enter a number between 1 and 9.");
+                continue;
+            }
             System.out.println("You selected: " + choice);
 
             if (choice == 1) {
