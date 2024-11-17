@@ -17,21 +17,28 @@ public class Book {
     this.checkedOut = checkedOut;
   }
 
+  public Book(String bookTitle, String author, int stock) {
+    this.id = setID(id);
+    this.bookTitle = bookTitle;
+    this.author = author;
+    this.stock = stock;
+  }
+
   // Returns the book id
   public int getId() {
     return id;
   }
 
   public int setID(int id) {
-        SecureRandom random = new SecureRandom();
+    SecureRandom random = new SecureRandom();
 
-        byte[] bytes = new byte[20];
-        random.nextBytes(bytes);
+    byte[] bytes = new byte[20];
+    random.nextBytes(bytes);
 
-        int randomInt = random.nextInt(100000, 999999);
+    int randomInt = random.nextInt(100000, 999999);
 
-        this.id = randomInt;
-        return this.id;
+    this.id = randomInt;
+    return this.id;
   }
 
   // Returns the stock
