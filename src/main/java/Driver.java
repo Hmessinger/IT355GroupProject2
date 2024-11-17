@@ -151,6 +151,7 @@ public class Driver {
             }
 
             if (choice == 2) {
+                lbm.loadBooks(books);
                 System.out.println("Enter the title of the book to reserve: ");
                 String reserveTitle = scan.nextLine();
                 lbm.reserveBook(account, reserveTitle);

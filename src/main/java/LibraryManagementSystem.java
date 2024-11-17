@@ -97,31 +97,20 @@ public class LibraryManagementSystem {
         }
     }
 
+    public void loadBooks(List<Book> books){
+        this.books.addAll(books);
+    }
+
     // CWE-1109: Avoid using the same variable for multiple purposes within
     // reservation logic
     public void reserveBook(Account account, String bookTitle) {
         Book reservedBook = null;
         bookLock.lock(); // Acquire lock to prevent race conditions
         try {
-            System.out.println("Attempting to reserve book: " + bookTitle);
-    
-            // Debug: Print all books in the library
-            System.out.println("Library contains the following books:");
             for (Book book : books) {
-                System.out.println(" - " + book.getTitle());
-            }
-    
-            for (Book book : books) {
-                System.out.println("Checking book: " + book.getTitle());
-                if (book.getTitle().trim().equalsIgnoreCase(bookTitle.trim())) {
-                    System.out.println("Title match found: " + book.getTitle());
-    
-                    if (!account.hasBorrowed(book)) {
-                        reservedBook = book;
-                        break;
-                    } else {
-                        System.out.println("Book already borrowed by account: " + book.getTitle());
-                    }
+                if (book.getTitle().trim().equalsIgnoreCase(bookTitle.trim()) && !account.hasBorrowed(book)) {
+                    reservedBook = book;
+                    break;
                 }
             }
     
@@ -136,7 +125,6 @@ public class LibraryManagementSystem {
         }
     }
     
-
     // Save books to file
     public void saveBooksToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
