@@ -101,24 +101,41 @@ public class LibraryManagementSystem {
     // reservation logic
     public void reserveBook(Account account, String bookTitle) {
         Book reservedBook = null;
-        bookLock.lock(); //  CWE-667:Acquire lock to prevent race conditions
+        bookLock.lock(); // Acquire lock to prevent race conditions
         try {
+            System.out.println("Attempting to reserve book: " + bookTitle);
+    
+            // Debug: Print all books in the library
+            System.out.println("Library contains the following books:");
             for (Book book : books) {
-                if (book.getTitle().equalsIgnoreCase(bookTitle) && !account.hasBorrowed(book)) {
-                    reservedBook = book;
-                    break;
+                System.out.println(" - " + book.getTitle());
+            }
+    
+            for (Book book : books) {
+                System.out.println("Checking book: " + book.getTitle());
+                if (book.getTitle().trim().equalsIgnoreCase(bookTitle.trim())) {
+                    System.out.println("Title match found: " + book.getTitle());
+    
+                    if (!account.hasBorrowed(book)) {
+                        reservedBook = book;
+                        break;
+                    } else {
+                        System.out.println("Book already borrowed by account: " + book.getTitle());
+                    }
                 }
             }
+    
             if (reservedBook != null) {
-                account.reserveBook(reservedBook); // Dedicated variable for reservation status
-                System.out.println("Book reserved successfully.");
+                account.reserveBook(reservedBook);
+                System.out.println("Book reserved successfully: " + reservedBook.getTitle());
             } else {
-                System.out.println("Unable to reserve book.");
+                System.out.println("Unable to reserve book: Either it doesn't exist or is already borrowed.");
             }
         } finally {
-            bookLock.unlock(); // CWE-833: Release lock to prevent deadlock
+            bookLock.unlock(); // Release lock to prevent deadlock
         }
     }
+    
 
     // Save books to file
     public void saveBooksToFile(String filename) {
