@@ -6,7 +6,7 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        // A hashmap would reduce the number of for loops
+        // Storing books in the library
         ArrayList<Book> books = new ArrayList<Book>();
         books.add(new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10,
                 false));
@@ -23,20 +23,6 @@ public class Driver {
         books.add(new Book(9, "Crime and Punishment", "Fyodor Dostoevsky", 18.0,
                 4, false));
         books.add(new Book(10, "The Odyssey", "Homer", 20.0, 7, false));
-
-        // Create an array of books that are in the library
-        // Book[] books = {
-        // new Book(1, "To Kill a Mockingbird", "Harper Lee", 30.0, 10, false),
-        // new Book(2, "1984", "George Orwell", 15.50, 8, false),
-        // new Book(3, "The Great Gatsby", "F. Scott Fitzgerald", 40.0, 5, false),
-        // new Book(4, "The Catcher in the Rye", "J.D. Salinger", 15.99, 7, false),
-        // new Book(5, "Moby Dick", "Herman Melville", 12.99, 6, false),
-        // new Book(6, "Pride and Prejudice", "Jane Austen", 23.0, 4, false),
-        // new Book(7, "The Hobbit", "J.R.R. Tolkien", 48.99, 9, false),
-        // new Book(8, "War and Peace", "Leo Tolstoy", 9.99, 3, false),
-        // new Book(9, "Crime and Punishment", "Fyodor Dostoevsky", 18.0, 4, false),
-        // new Book(10, "The Odyssey", "Homer", 20.0, 7, false)
-        // };
 
         Scanner scan = new Scanner(System.in);
         String userName;

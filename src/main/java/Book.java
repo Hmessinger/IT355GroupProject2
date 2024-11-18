@@ -32,7 +32,8 @@ public class Book {
 
   public int setID(int id) {
     // CWE-338: Use of Cryptographically Weak Pseudo-Random Number Generator (PRNG)
-    // Uses SecureRandom instead of Random to ensure cryptographic security when generating book IDs.
+    // Uses SecureRandom instead of Random to ensure cryptographic security when
+    // generating book IDs.
 
     SecureRandom random = new SecureRandom();
 
@@ -42,7 +43,7 @@ public class Book {
     int randomInt = ByteBuffer.wrap(bytes).getInt();
 
     this.id = Math.abs(randomInt % 1_000_000);
-    
+
     return this.id;
   }
 
@@ -78,7 +79,6 @@ public class Book {
     return bookTitle;
   }
 
-  // Returns the author
   // Returns the author
   public String getAuthor() {
     return author;
@@ -172,9 +172,6 @@ public class Book {
     }
     return price * (1 - discount);
   }
-
-  // CWE-561: Avoid Dead Code - remove unused or unnecessary methods
-  // Only using methods that are going to be used
 
   // Example of CWE-1116: Accurate Comments, comments that are accurate
   // and describe functionality.

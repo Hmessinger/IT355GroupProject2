@@ -11,8 +11,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LibraryManagementSystem {
     private List<Book> books; // Avoids global use by containing the list within the class (CWE-1108)
-    private final Lock bookLock = new ReentrantLock(); // CWE-667: Improper Locking - Proper locking mechanism for shared resource
-
+    private final Lock bookLock = new ReentrantLock(); // CWE-667: Improper Locking - Proper locking mechanism for
+                                                       // shared resource
 
     public LibraryManagementSystem() {
         this.books = new ArrayList<>();
@@ -31,8 +31,10 @@ public class LibraryManagementSystem {
                         + ", Price: " + book.getPrice() + ", Checked out Status: " + book.isCheckedOut());
     }
 
-    // CWE-1024: Properly validating file reading and parsing inputs to avoid incompatible type issues
-    // CWE-1095: Loop Condition Value Update within the Loop - Proper loop control structures are used 
+    // CWE-1024: Properly validating file reading and parsing inputs to avoid
+    // incompatible type issues
+    // CWE-1095: Loop Condition Value Update within the Loop - Proper loop control
+    // structures are used
     // to avoid modifying the loop condition inside the loop body.
 
     public void loadBooksFromFile(String filename) {
@@ -97,7 +99,7 @@ public class LibraryManagementSystem {
         }
     }
 
-    public void loadBooks(List<Book> books){
+    public void loadBooks(List<Book> books) {
         this.books.addAll(books);
     }
 
@@ -113,7 +115,7 @@ public class LibraryManagementSystem {
                     break;
                 }
             }
-    
+
             if (reservedBook != null) {
                 account.reserveBook(reservedBook);
                 System.out.println("Book reserved successfully: " + reservedBook.getTitle());
@@ -124,7 +126,7 @@ public class LibraryManagementSystem {
             bookLock.unlock(); // Release lock to prevent deadlock
         }
     }
-    
+
     // Save books to file
     public void saveBooksToFile(String filename) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
@@ -176,14 +178,14 @@ public class LibraryManagementSystem {
         saveBooksToFile(filename);
     }
 
-    public static void main(String[] args) {
-        LibraryManagementSystem library = new LibraryManagementSystem();
-        // Load books from the file
-        String filename = "books.txt";
-        library.loadBooksFromFile(filename);
-        library.displayBooks();
+    // public static void main(String[] args) {
+    // LibraryManagementSystem library = new LibraryManagementSystem();
+    // // Load books from the file
+    // String filename = "books.txt";
+    // library.loadBooksFromFile(filename);
+    // library.displayBooks();
 
-        // Allow the user to add another book and save it to the file
-        library.addBook(filename);
-    }
+    // // Allow the user to add another book and save it to the file
+    // library.addBook(filename);
+    // }
 }
